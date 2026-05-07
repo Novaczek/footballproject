@@ -1,4 +1,4 @@
-package model;
+package com.codingwithkuba.football.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
