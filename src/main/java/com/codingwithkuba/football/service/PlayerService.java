@@ -24,12 +24,20 @@ public class PlayerService {
     }
 
     public Player getPlayerById(Long id) {
-        return playerRepository.findById(id).orElse(null);
+        return playerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Player not found"));
     }
 
     public Player updatePlayer(Long id, Player player) {
-        player.setId(id);
-        return playerRepository.save(player);
+        Player existing = playerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Player not found"));
+
+        existing.setName(player.getName());
+        existing.setAge(player.getAge());
+        existing.setPosition(player.getPosition());
+        existing.setTeam(player.getTeam());
+
+        return playerRepository.save(existing);
     }
 
     public void deletePlayer(Long id) {

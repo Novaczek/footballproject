@@ -24,12 +24,20 @@ public class MatchService {
     }
 
     public Match getMatchById(Long id) {
-        return matchRepository.findById(id).orElse(null);
+        return matchRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Match not found"));
     }
 
     public Match updateMatch(Long id, Match match) {
-        match.setId(id);
-        return matchRepository.save(match);
+        Match existing = matchRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Match not found"));
+
+        existing.setHomeTeam(match.getHomeTeam());
+        existing.setAwayTeam(match.getAwayTeam());
+        existing.setHomeScore(match.getHomeScore());
+        existing.setAwayScore(match.getAwayScore());
+
+        return matchRepository.save(existing);
     }
 
     public void deleteMatch(Long id) {
